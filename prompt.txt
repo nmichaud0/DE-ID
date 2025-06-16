@@ -1,0 +1,157 @@
+Task: You are a de-identification model. Your job is to classify a target word from a sentence as either safe to publish (0) or sensitive personal information (1) according to the HIPAA Privacy Rule.
+
+The HIPAA rule defines 18 types of sensitive information. If the word is part of any of these identifiers, label it as 1 (sensitive). Otherwise, label it as 0 (safe).
+
+HIPAA identifiers include:
+- Names
+- Addresses smaller than a state (e.g. street, city, ZIP)
+- Dates (except year)
+- Phone/fax numbers
+- Email addresses
+- Social Security numbers
+- Medical record / account / license numbers
+- Vehicle / device IDs
+- URLs / IP addresses
+- Fingerprints / voiceprints
+- Photos / any other unique identifying detail
+
+Answer with just one digit:
+- 1 = sensitive
+- 0 = safe
+
+Examples:
+
+Sentence: My name is John Smith and I live in Geneva.
+Word: John
+Answer: 1
+
+Sentence: My name is John Smith and I live in Geneva.
+Word: Geneva
+Answer: 1
+
+Sentence: My name is John Smith and I live in Geneva.
+Word: live
+Answer: 0
+
+Sentence: Today is June 11, 2025, and it’s sunny.
+Word: June
+Answer: 1
+
+Sentence: Please call me at 555-123-4567.
+Word: 555-123-4567
+Answer: 1
+
+Sentence: I had coffee this morning.
+Word: coffee
+Answer: 0
+
+Sentence: Location: 221B Baker Street, London.
+Word: Baker
+Answer: 1
+
+Sentence: I checked in at 8:45am.
+Word: 8:45am
+Answer: 1
+
+Sentence: Booked on Jan 22.
+Word: Jan
+Answer: 1
+
+Sentence: You can email me at sara92@uni.edu
+Word: sara92@uni.edu
+Answer: 1
+
+Sentence: My Social is 999-77-1234
+Word: 999-77-1234
+Answer: 1
+
+Sentence: New license: DLX-0098742
+Word: DLX-0098742
+Answer: 1
+
+Sentence: Registered under patient ID ZQ-551-A
+Word: ZQ-551-A
+Answer: 1
+
+Sentence: I love to eat tacos on Friday.
+Word: tacos
+Answer: 0
+
+Sentence: Found on http://private-hospital.com
+Word: http://private-hospital.com
+Answer: 1
+
+Sentence: He spoke with Olivia yesterday.
+Word: Olivia
+Answer: 1
+
+Sentence: IP logged as 192.168.0.1
+Word: 192.168.0.1
+Answer: 1
+
+Sentence: Called him at work.
+Word: Called
+Answer: 0
+
+Sentence: Downtown, 3rd and Main St.
+Word: Main
+Answer: 1
+
+Sentence: She passed away on April 3rd.
+Word: April
+Answer: 1
+
+Sentence: Dr. Samuel did the surgery.
+Word: Samuel
+Answer: 1
+
+Sentence: Coordinates: 46.2044° N, 6.1432° E
+Word: 46.2044°
+Answer: 1
+
+Sentence: MRI taken on 05/02
+Word: 05/02
+Answer: 1
+
+Sentence: My brother lives in Zurich.
+Word: Zurich
+Answer: 1
+
+Sentence: I went running.
+Word: running
+Answer: 0
+
+Sentence: 23 Pineapple Ave, Suite 2A
+Word: 2A
+Answer: 1
+
+Sentence: Attended meeting on March 12.
+Word: March
+Answer: 1
+
+Sentence: They reached me by fax.
+Word: fax
+Answer: 1
+
+Sentence: Emma’s profile picture was shared.
+Word: picture
+Answer: 1
+
+Sentence: Flight arrived at 13:20.
+Word: 13:20
+Answer: 1
+
+Sentence: Serial number: ACX49201
+Word: ACX49201
+Answer: 1
+
+Sentence: Notes saved to my account.
+Word: account
+Answer: 1
+
+Even if a word is in the context of a sensitive sentence, if it's not sensitive by itself, it shouldn't ever be flagged as 1 (sensitive).
+
+[NEW INPUT]
+Sentence: $sentence$
+Word: $word$
+Answer:

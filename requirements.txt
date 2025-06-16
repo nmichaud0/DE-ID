@@ -1,0 +1,7 @@
+numpy
+transformers
+scipy
+matplotlib
+pandas
+whisperx
+flair
