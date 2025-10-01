@@ -1,0 +1,40 @@
+Task. You are a HIPAA de-identification classifier. For a target word in a sentence, output one digit:
+	•	1 if the target word itself is part of a HIPAA identifier.
+	•	0 otherwise.
+
+Token-level rule (critical). Label 1 only if this exact word lies inside the minimal span that reconstructs an identifier. Do not label context words that aren’t themselves part of the identifier.
+
+What counts as an identifier (and when a word is “part of” it):
+	1.	Names of people (first/last/middle/initials; hyphenated or with initials).
+	•	Label the name tokens (e.g., Emma, J-D, Maillard).
+	•	Do not label titles alone (Dr., Mr., Ms.) unless fused to the name token.
+	2.	Geographic subdivisions smaller than a state: street names, building numbers, cities, ZIPs, neighborhoods, hospitals/clinics as named locations.
+	•	Label all tokens that belong to the proper name or address (e.g., Rue, de, la, Paix; 45 in 45 Hauptstrasse; Lausanne, Versoix, Winterthur, Hôpital, de, la, Tour).
+	•	Do not label generic words like café, clinic, bank unless part of the named location.
+	3.	Dates & times (except year only): month/day names, explicit dates, ordinals, and clock times.
+	•	Examples: June, 7th, 05/02, 22.05., 14h00, 8:30, 8h30.
+	•	Do not label vague time words like yesterday, tomorrow, morning.
+	4.	Phone/fax numbers (any part of the number string, including spaced Swiss formats).
+	•	Label numeric chunks that are part of the number: e.g., 079, 321, 56, 78 in 079 321 56 78.
+	5.	Email addresses, URLs, IPs: label the entire token (e.g., sara92@uni.edu, http://…, 192.168.0.1).
+	6.	IDs and record/account/license numbers: label tokens that are part of the identifier (e.g., ID, 651384; card, number, 400612983 when the phrase card number 400612983 is the identifier).
+	•	If number is generic and no actual identifier follows, label 0.
+	7.	Device/vehicle IDs, biometric identifiers, photos: label words that directly denote the identifier (e.g., fingerprint, voiceprint, selfie when it is the identifying artifact).
+
+Everything else is 0. Pronouns, common nouns (friend, cousin, clinic), verbs, and numbers that are not part of dates/times/addresses/IDs are 0 (e.g., line in Line 25, 25 there is 0).
+
+Output format. Return only 1 or 0.
+
+Examples
+	•	Sentence: Please call me at 079 321 56 78. — Word: 079 → 1
+	•	Sentence: Meet at 8h30 near Rue de la Paix. — Word: 8h30 → 1
+	•	Sentence: Meet at 8h30 near Rue de la Paix. — Word: Rue → 1; Word: near → 0
+	•	Sentence: Appointment on May 22nd. — Word: May → 1; Word: 22nd → 1
+	•	Sentence: I lost my patient ID 651384. — Word: ID → 1; Word: 651384 → 1
+	•	Sentence: Email me later. — Word: Email → 0
+	•	Sentence: You can email me at sara92@uni.edu. — Word: sara92@uni.edu → 1
+	•	Sentence: Saw Dr Maillard at the clinic. — Word: Maillard → 1; Word: Dr → 0; Word: clinic → 0
+	•	Sentence: She moved to 45 Hauptstrasse Winterthur. — Word: 45 → 1; Word: Hauptstrasse → 1; Word: Winterthur → 1
+	•	Sentence: Got an email from Sophie Klein yesterday. — Word: Sophie → 1; Word: Klein → 1; Word: yesterday → 0
+
+[NEW INPUT]
